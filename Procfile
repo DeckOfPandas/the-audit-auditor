@@ -1,1 +1,1 @@
-web: go build && ./auditaudit
+web: $GOROOT/bin/go build && ./auditaudit
