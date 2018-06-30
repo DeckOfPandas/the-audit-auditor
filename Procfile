@@ -1,1 +1,1 @@
-web: bee run
+web: go-getting-started
