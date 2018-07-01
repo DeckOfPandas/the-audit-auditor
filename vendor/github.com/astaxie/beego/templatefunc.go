@@ -461,10 +461,11 @@ func RenderForm(obj interface{}) template.HTML {
 		if ignored {
 			continue
 		}
-
+        raw = append(raw, "<p class=field>")
 		raw = append(raw, renderFormField(label, name, fType, fieldV.Interface(), id, class, required))
+        raw = append(raw, "</p>")
 	}
-	return template.HTML(strings.Join(raw, "</br>"))
+	return template.HTML(strings.Join(raw, ""))
 }
 
 // renderFormField returns a string containing HTML of a single form field.

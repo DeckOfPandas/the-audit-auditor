@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"github.com/astaxie/beego"
 	"github.com/astaxie/beego/orm"
+	"github.com/beego-datatables/datatables"
     "auditaudit/models"
 )
 
@@ -12,6 +13,10 @@ type MainController struct {
 }
 
 type ManageController struct {
+	beego.Controller
+}
+
+type OperationRecord struct {
 	beego.Controller
 }
 
@@ -80,4 +85,19 @@ func (manage *ManageController) View() {
 		manage.Data["Audits"] = audits
     }
 	manage.TplName = "view.tpl"
+}
+
+func (c* OperationRecord) AjaxData() {
+	var Qtab datatables.Data
+	Qtab.Ctx = c.Input() //datatables get
+	Qtab.DBName = "default"
+	Qtab.TableName = "Audit" //modles tables name
+	Qtab.Columns = []string{"Id","Title" ,"Summary","Author","Email","Location", "Days"} //datatables columns arrange
+	Qtab.Order = []string{"Id"}
+	Qtab.SearchFilter = []string{"Id","Title" ,"Summary","Author","Email","Location"} //datatables filter
+	datatables.RegisterColumns[Qtab.TableName] = new([]models.Audit) //register result 
+
+	rs , _ := Qtab.Table()
+	c.Data["json"] = rs
+	c.ServeJSON()
 }
